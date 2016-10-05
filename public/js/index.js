@@ -4,34 +4,21 @@ import App from './App';
 import Relay from 'react-relay';
 import {post} from 'jquery';
 
-let renderApp = links => render(<App limit={4} links={links}/>, document.getElementById("app"));
-
-let API = {
-    fetchLinks(){
-        post('/graphql', {
-            query: `{
-              links {
-                _id
-                title
-                url
-              }
-            }`
-        })
-            .then(res => renderApp(res.data.links));
+class HomeRoute extends Relay.Route{
+    static routeName = 'Home';
+    static queries = {
+        store: (Component) => Relay.QL`
+            query MainQuery{
+                store { ${Component.getFragment('store')} }
+            }
+        `
     }
-};
+}
 
+render(
+    <Relay.RootContainer
+        Component={App}
+        route={new HomeRoute()}
+    />,
+    document.getElementById("app"));
 
-API.fetchLinks();
-
-
-console.log(
-    Relay.QL`
-    query Sample {
-      links {
-        _id
-        title
-        url
-      }
-    }`
-);

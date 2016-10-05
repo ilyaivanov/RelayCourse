@@ -9,26 +9,13 @@ let app = express();
 
 app.use(express.static('public'));
 
-
-let db;
-MongoClient.connect(process.env.MONGO_URL, (err, database)=> {
-    if (err) throw err;
+(async () => {
+    let db = await MongoClient.connect(process.env.MONGO_URL);
 
     app.use('/graphql', GraphQLHTTP({
-        schema: Schema(database),
+        schema: Schema(db),
         graphiql: true
     }));
 
-    db = database;
-
     app.listen(3000, () => console.log('Lintenning on port 3000'));
-});
-
-
-app.get('/data/links', (req, res)=> {
-    db.collection('links').find({}).toArray((err, links)=> {
-        if (err) throw err;
-
-        res.json(links);
-    });
-});
+})();

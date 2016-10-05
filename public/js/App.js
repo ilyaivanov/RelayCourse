@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 
-export default props => <div>
+let App = props => <div>
     <ul>
         {props.links.slice(0,props.limit).map(l => <li key={l._id}><a href={l.url}>{l.title}</a></li>)}
     </ul>
@@ -9,5 +9,13 @@ export default props => <div>
     <button>prev</button>
     <button>next</button>
 </div>;
+
+App.propTypes = {
+    limit : PropTypes.number.isRequired
+};
+
+export default App;
+
+
 
 

@@ -6,7 +6,7 @@ class App extends React.Component {
     render() {
         let {store, limit} = this.props;
 
-        let content = store.links.map(l => (<Link key={l._id} link={l}/>));
+        let content = store.linkConnection.edges.map(edge => (<Link key={edge.node.id} link={edge.node}/>));
 
         return (
             <div>
@@ -23,10 +23,13 @@ class App extends React.Component {
 }
 
 export default Relay.createContainer(App, {
+    initialVariables:{
+        limit: 3
+    },
     fragments: {
         store: () => Relay.QL`
         fragment on Store{
-            links{_id, ${Link.getFragment('link')}}
+            linkConnection(first:$limit){ edges { node {id, ${Link.getFragment('link')}}}}
         }`
     }
 });

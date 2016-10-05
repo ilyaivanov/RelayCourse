@@ -1,7 +1,7 @@
 import React from 'react';
 import {render} from 'react-dom';
 import App from './App';
-
+import Relay from 'react-relay';
 import {post} from 'jquery';
 
 let renderApp = links => render(<App limit={4} links={links}/>, document.getElementById("app"));
@@ -23,3 +23,15 @@ let API = {
 
 
 API.fetchLinks();
+
+
+console.log(
+    Relay.QL`
+    query Sample {
+      links {
+        _id
+        title
+        url
+      }
+    }`
+);

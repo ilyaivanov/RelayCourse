@@ -2,7 +2,6 @@ import React from 'react';
 import {render} from 'react-dom';
 import App from './App';
 import Relay from 'react-relay';
-import {post} from 'jquery';
 
 class HomeRoute extends Relay.Route{
     static routeName = 'Home';

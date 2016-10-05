@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import Relay from 'react-relay';
+import Link from './Components/link';
 
 class App extends React.Component {
     static propTypes = {
@@ -13,9 +14,8 @@ class App extends React.Component {
     render() {
         let {store, limit} = this.props;
 
-        let content = store.links.slice(0, limit).map(l => (<li key={l._id}>
-            <a href={l.url}>{l.title}</a>
-        </li>));
+        let content = store.links.slice(0, limit).map(l => (<Link key={l._id} link={l}/>));
+
         return (
             <div>
                 <ul>
@@ -34,7 +34,7 @@ export default Relay.createContainer(App, {
     fragments: {
         store: () => Relay.QL`
         fragment on Store{
-            links{_id, title, url}
+            links{_id, ${Link.getFragment('link')}}
         }`
     }
 });
